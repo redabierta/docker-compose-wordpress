@@ -1,9 +1,9 @@
 version: '3'
 services:
   mysql:
-    image: mariadb
+    image: jsurf/rpi-mariadb
     volumes:
-      - ~/docker/mysql-data:/var/lib/mysql
+      - /data/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: mysql_root_pass
       MYSQL_DATABASE: redabier
@@ -11,7 +11,7 @@ services:
       MYSQL_PASSWORD: user_pass
     restart: always
   wordpress:
-    image: redabierta:latest
+    image: redabierta/wordpress:latest
     volumes:
       - /data/html:/var/www/html
     depends_on:
@@ -29,9 +29,9 @@ services:
   nginx:
     image: nginx:alpine
     volumes:
-      - nginx:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx/conf.d
       - /data/html:/var/www/html
     ports:
-      - 8080:80
+      - 80:80
     links:
       - wordpress
